@@ -1,0 +1,125 @@
+.topMenu{
+  width: 100%;
+  height: 30px;
+  background-color: lightgray;
+  border-top: 0.5px solid gray;
+  border-bottom: 0.5px solid gray;
+}
+
+.LNB1{
+  height: 80px;
+  width: 950px;
+  padding-top: 30px;
+  margin: auto;
+}
+#logo{
+  width: 175px;
+  height: 49px;
+  float: left;
+  font-size: 40px;
+  text-align: center;
+}
+#searchTop{
+  width: 500px;
+  height: 20px;
+  margin-left:200px;
+}
+#searchTop ul{
+  list-style-type: none;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  width: 100%;
+  font-size: 0.8rem;
+}
+#searchTop li{
+  border-left: 1px solid gray;
+  text-align: center;
+  float: left;
+  padding: 0px 5px 0px 5px;
+}
+#searchBar{
+  border: 1px solid black;
+  width: 500px;
+  height: 29px;
+  float: left;
+  margin: 5px 30px 0px 20px;
+}
+#promotionBanner{
+  width: 220px;
+  height: 49px;
+  float: left;
+  margin-top: -20px
+}
+
+.LNB2{
+  height: 50px;
+  width: 100%;
+  position: relative;
+  background-color: skyblue;
+}
+
+#category{
+  width: 950px;
+  margin: auto;
+  height: 50px;
+  text-align: center;
+}
+#category ul{
+  list-style-type: none;
+  display: inline-block;
+  text-align: center;
+  margin: auto;
+}
+#category ul li{
+  text-align: center;
+  float: left;
+  margin: 15px 20px 0px 0px;
+  width: 80px;
+}
+
+
+
+.cont{
+  width: 950px;
+  height: 500px;
+  margin: auto;
+  padding-top: 50px;
+}
+#preview{
+  width: :100%;
+  height: 350px;
+  border-bottom: 0.5px solid gray;
+}
+#goodImage{
+  width: 300px;
+  height: 300px;
+  float: left;
+  margin-right: 25px;
+}
+table caption{
+  text-align: left;
+  font-size: 40px;
+  height: 60px;
+}
+table tr{
+  height: 40px;
+}
+table td{
+  width: 100px;
+  text-align: right;
+}
+
+
+
+#preBox{
+  display: none;
+  height: 100px;
+  width: 500px;
+  margin: 0px 0px 30px 400px;
+  background-color: lightgray;
+}
+#preBox p{
+  color: gray;
+}
