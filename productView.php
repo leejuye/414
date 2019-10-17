@@ -1,5 +1,12 @@
 <?php
-$getId = 1;
+session_start();
+$userId = "";
+if(isset($_SESSION['userId'])) $userId = $_SESSION['userId'];
+
+$getId = $_GET['uid'];
+$currentURI = $_SERVER['REQUEST_URI'];
+
+
 $connect = mysqli_connect ("localhost", "root", "pass618", "inu");
 
 $sql="SELECT * FROM t_goods WHERE uid = $getId";
@@ -16,32 +23,70 @@ $row = mysqli_fetch_array($result);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
   <title>쇼핑몰 만들기</title>
 </head>
 <body>
   <script type="text/javascript">
+
     function changeCount(num){
       var cou = document.getElementById('count');
       var res = parseInt(cou.value) + num;
-      if(res<0) res = 0;
-      // 재고보다 많이 주문할 경우 처리하는 기능 나중에 넣자..
+      if(res<1) res = 1;
       cou.value = res;
-      viewPreBox();
+      viewPreBox(res);
     }
 
-    function viewPreBox(){
+    function viewPreBox(res){
       document.getElementById("preBox").style.display = 'block';
-
-      document.getElementById("asdf")
+      document.getElementById("preview").style.height = '400px';
+      document.getElementById("cou").value = res;
+      var perPiece = <?= $row['price']?>;
+      document.getElementById("pri").value = res*perPiece;
     }
 
+    function doLogin(){
+      location.href='./login/login.php?location='+document.location.href;
+    }
+
+    function check() {
+      
+      var f = document.Frm;
+      
+      if(f.userId.value == "") {
+        alert("로그인이 필요합니다.");
+        location.href = "./login/login.php?location=<?=$currentURI?>";
+        return false;
+      }
+      else if(f.ea.value == "0") {
+        alert("수량을 선택하세요.");
+        return false;
+      }
+
+    }
+      window.onload =function(){
+      var userId = "<?= $userId?>"; 
+        if(userId != null){
+            document.getElementById('welcome').innerHTML=userId;
+        }
+        if(userId != 'admin'){
+          document.getElementById("add").style.display='none';
+        }
+      }
   </script>
 <!-- 상단 메뉴 -->
   <div class="topMenu">
+  <ul>
+      <li><div id='welcome'></div></li>
+      <li><a href = './productReg.php'><div id = 'add'>제품 추가하기<div></a></li>
+      <li><a href="./login/login.php"><div id='login'>로그인</div></a></li>
+      <li><a href="./join/join.php">회원가입</a></li>
+      <li style="border:none;"><a href="cartList.php">장바구니</a></li>
+    </ul>
   </div>
   <div class="LNB1">
-    <div id="logo">쇼핑몰</div>
+   <a href = "/414/main.php"><div id="logo">쇼핑몰</div></a> 
     <div id="searchTop">
       <ul>
         <li style="border:none;">인기검색어1</li>
@@ -50,7 +95,8 @@ $row = mysqli_fetch_array($result);
         <li>인기검색어4</li>
       </ul>
     </div>
-    <div id="searchBar"><input type="search" name="search" val=""></div>
+    <input id="searchBar" type="search" name="search" val="">
+
     <div id="promotionBanner">광고</div>
   </div>
   <div class="LNB2">
@@ -61,38 +107,42 @@ $row = mysqli_fetch_array($result);
         <li>ebook</li>
         <li>웹소설</li>
         <li>기프트</li>
-
         <li>음반</li>
         <li>중고장터</li>
       </ul>
     </div>
   </div>
   <!-- 상단 메뉴 -->
+
   <!-- 제품 상세보기 -->
   <div class="cont">
     <div id="preview">
-      <div id="goodImage"><img src = "<?php echo $row['mainImg']; ?>" width=300px height="300px"></div>
-        <table name="previewForm">
-          <caption><?php echo $row['title']; ?></caption>
-          <tr><td id="attri">판매가</td><td><?php echo $row['price']?>원</td></tr>
-          <tr><td id="attri">배송비</td><td><?php echo $row['deliveryFee']?>원</td></tr>
+      <div id="goodImage"><img src = "<?=$row['mainImg']; ?>" width=300px height="300px"></div>
+        <form name="Frm" action="./addCart.php" method="post" onsubmit="return check()">
+        <input type="hidden" name="goodId" value=<?=$getId?>>
+        <table>
+          <caption><?=$row['title']; ?></caption>
+          <tr><td id="attri">판매가</td><td><?=$row['price']?>원</td></tr>
+          <tr><td id="attri">배송비</td><td><?=$row['deliveryFee']?>원</td></tr>
           <tr><td id="attri">수량</td>
-            <td><button onclick="changeCount(-1)">-</button></td>
-            <td><input type="text" value="0"  id="count" ></td>
-            <td><button onclick="changeCount( 1)">+</button></td>
+            <td><a href="#" onclick="changeCount(-1)">-</a></td>
+            <td><input type="text" value="0" id="count" ></td>
+            <td><a href="#" onclick="changeCount( 1)">+</a></td>
           </tr>
         </table>
-        <div id="preBox">
-          <p><?php echo$row['title']?></p>
-          <div id="asdf"></div>
-        </div>
-        <div>
-        <button>장바구니 담기</button><button>구매하기</button>
-      </div>
+          <div id="preBox">
+            <p ><?=$row['title']?></p>
+            <div id="box1">수량: <input type="text" name="ea" value="0" id="cou">개</div>
+            <div id="box2">최종결정금액: <input type="text" value="" id="pri">원</div>
+          </div>
+        <input type="submit" value="장바구니 담기"> <button>구매하기</button>
+       </form>
     </div>
     <div id = "detail">
-      <h2>상세정보</h2>
-      <?php echo $row['spec'] ?>
+
+      <p>상세정보</p>
+
+      <?=$row['spec'] ?>
 
     </div>
   </div>
