@@ -51,9 +51,9 @@ $row = mysqli_fetch_array($result);
     }
 
     function check() {
-      
+
       var f = document.Frm;
-      
+
       if(f.userId.value == "") {
         alert("로그인이 필요합니다.");
         location.href = "./login/login.php?location=<?=$currentURI?>";
@@ -65,28 +65,22 @@ $row = mysqli_fetch_array($result);
       }
 
     }
-      window.onload =function(){
-      var userId = "<?= $userId?>"; 
-        if(userId != null){
-            document.getElementById('welcome').innerHTML=userId;
-        }
-        if(userId != 'admin'){
-          document.getElementById("add").style.display='none';
-        }
-      }
   </script>
 <!-- 상단 메뉴 -->
   <div class="topMenu">
   <ul>
-      <li><div id='welcome'></div></li>
-      <li><a href = './productReg.php'><div id = 'add'>제품 추가하기<div></a></li>
+    <?php if ($userId != null){?>
+      <li><div id='welcome'><?=$userId?></div></li>
+    <?php if ($userId ==='admin')
+        echo "<li><a href = './productReg.php'><div id = 'add'>제품 추가하기<div></a></li>";} else{?>
       <li><a href="./login/login.php"><div id='login'>로그인</div></a></li>
       <li><a href="./join/join.php">회원가입</a></li>
+      <?php }?>
       <li style="border:none;"><a href="cartList.php">장바구니</a></li>
     </ul>
   </div>
   <div class="LNB1">
-   <a href = "/414/main.php"><div id="logo">쇼핑몰</div></a> 
+   <a href = "/414/main.php"><div id="logo">쇼핑몰</div></a>
     <div id="searchTop">
       <ul>
         <li style="border:none;">인기검색어1</li>

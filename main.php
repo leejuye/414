@@ -16,30 +16,15 @@ if(isset($_SESSION['userId'])) $userId = $_SESSION['userId'];
   </style>
 </head>
 <body>
-<script>
-  window.onload =function(){
-    var userId = "<?= $userId?>"; 
-    if(userId != null){
-      // document.getElementById("login").style.display = 'none';
-      document.getElementById('welcome').innerHTML=userId;
-    }
-    // else{
-    //   document.getElementById("logout").style.display = 'none';
-    // }
-    if(userId != 'admin'){
-      document.getElementById("add").style.display='none';
-    }
-  }
-</script>
-
-
 <div class="topMenu">
-    <ul>
-      <li><div id='welcome'></div></li>
-      <li><a href = './productReg.php'><div id = 'add'>제품 추가하기<div></a></li>
+  <ul>
+    <?php if ($userId != null){?>
+      <li><div id='welcome'><?=$userId?></div></li>
+    <?php if ($userId ==='admin')
+        echo "<li><a href = './productReg.php'><div id = 'add'>제품 추가하기<div></a></li>";} else{?>
       <li><a href="./login/login.php"><div id='login'>로그인</div></a></li>
-      <!-- <li><a href="#" onclick="removeId();"><div id='logout'>로그아웃</div></a></li> -->
       <li><a href="./join/join.php">회원가입</a></li>
+      <?php }?>
       <li style="border:none;"><a href="cartList.php">장바구니</a></li>
     </ul>
   </div>
@@ -82,7 +67,7 @@ if(isset($_SESSION['userId'])) $userId = $_SESSION['userId'];
 
         $sql="select * from t_goods";
         $result = mysqli_query($connect, $sql) or die(mysqli_error($connect));
-      
+
         $count = 0;
         while($row = mysqli_fetch_array($result)){
           if($count%4 == 0) echo "<tr>";
@@ -101,9 +86,9 @@ if(isset($_SESSION['userId'])) $userId = $_SESSION['userId'];
           $count++;
         }
         if($count%4!=3) echo "</tr>";
-        
+
       ?>
-    </table> 
+    </table>
   </div>
 </body>
 </html>
